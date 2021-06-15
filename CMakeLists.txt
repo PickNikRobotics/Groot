@@ -199,45 +199,19 @@ endif()
 INSTALL(TARGETS behavior_tree_editor
   LIBRARY DESTINATION ${GROOT_LIB_DESTINATION}
   ARCHIVE DESTINATION lib
-  INCLUDES DESTINATION include
+  INCLUDES DESTINATION include/bt_editor
 )
 
-# configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/cmake/.cmake.in
-#   ${CMAKE_CURRENT_BINARY_DIR}/NodeEditorConfig.cmake
-#   INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
-# )
+configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/cmake/.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/NodeEditorConfig.cmake
+  INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
+)
 
 INSTALL(FILES cmake/FindZMQ.cmake DESTINATION lib/cmake)
 
 INSTALL(TARGETS Groot RUNTIME DESTINATION ${GROOT_BIN_DESTINATION} )
 
-# this didn't work:
-# INSTALL(TARGETS Groot INCLUDES destination include)
-INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bt_editor/ DESTINATION ${GROOT_INC_DESTINATION})
-
-# this installs the QtNodeEditor headers to the groot package, but when trying to build moveit_studio_manual_mode_ui
-# with a groot header included, colcon complains about not finding cmake files for QtNodeEditor:
-#
-# CMake Error at /home/wyatt/ws_moveit2/install/groot/share/groot/cmake/ament_cmake_export_dependencies-extras.cmake:21 (find_package):
-#   By not providing "FindQtNodeEditor.cmake" in CMAKE_MODULE_PATH this project
-#   has asked CMake to find a package configuration file provided by
-#   "QtNodeEditor", but CMake did not find one.
-
-#   Could not find a package configuration file provided by "QtNodeEditor" with
-#   any of the following names:
-
-#     QtNodeEditorConfig.cmake
-#     qtnodeeditor-config.cmake
-
-#   Add the installation prefix of "QtNodeEditor" to CMAKE_PREFIX_PATH or set
-#   "QtNodeEditor_DIR" to a directory containing one of the above files.  If
-#   "QtNodeEditor" provides a separate development package or SDK, be sure it
-#   has been installed.
-# Call Stack (most recent call first):
-#   /home/wyatt/ws_moveit2/install/groot/share/groot/cmake/grootConfig.cmake:41 (include)
-#   CMakeLists.txt:36 (find_package)
-
-# INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/QtNodeEditor/include/ DESTINATION ${GROOT_INC_DESTINATION})
+INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bt_editor/ DESTINATION ${GROOT_INC_DESTINATION}/bt_editor/)
 
 if(ament_cmake_FOUND)
   ament_export_include_directories(include)
