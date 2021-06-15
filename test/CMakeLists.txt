@@ -4,6 +4,7 @@ PROJECT(GrootTest LANGUAGES CXX)
 
 find_package(Qt5Test REQUIRED)
 find_package(Qt5Gui REQUIRED)
+find_package(NodeEditor COMPONENTS nodes REQUIRED)
 
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTORCC ON)
@@ -19,7 +20,6 @@ function(CompileTest name)
 endfunction()
 
 set(RESOURCE_FILES
-    ../QtNodeEditor/resources/resources.qrc
     ../bt_editor/resources/icons.qrc
     ../bt_editor/resources/style.qrc
     ../test_data/test_files.qrc

@@ -8,7 +8,8 @@ endif()
 
 project(groot)
 
-find_package(Qt5 COMPONENTS  Core Widgets Gui OpenGL Xml Svg)
+find_package(NodeEditor COMPONENTS nodes REQUIRED)
+find_package(Qt5 COMPONENTS  Core Widgets Gui OpenGL Xml Svg REQUIRED)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}  "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 if(NOT CMAKE_VERSION VERSION_LESS 3.1)
@@ -25,6 +26,7 @@ if(ament_cmake_FOUND)
 
   set(dependencies
     behaviortree_cpp_v3
+    NodeEditor
   )
 
   message(STATUS "------------------------------------------------")
@@ -56,19 +58,19 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-add_definitions(${Qt5Widgets_DEFINITIONS} -DNODE_EDITOR_STATIC )
+add_definitions(${Qt5Widgets_DEFINITIONS} -DNODE_EDITOR_SHARED )
 set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 #set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 #set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 
 if(ament_cmake_FOUND)
-  INCLUDE_DIRECTORIES(include ./QtNodeEditor/include ./ ./bt_editor/)
+  INCLUDE_DIRECTORIES(include ./ ./bt_editor/)
 else()
   INCLUDE_DIRECTORIES(${catkin_INCLUDE_DIRS} ./QtNodeEditor/include ./  )
 endif()
 
-add_subdirectory( QtNodeEditor )
+# add_subdirectory( QtNodeEditor )
 
 ##########################################
 # FIX ME in the future....
@@ -145,7 +147,7 @@ add_library(behavior_tree_editor SHARED
     ${FORMS_HEADERS}
 )
 
-SET(GROOT_DEPENDENCIES QtNodeEditor )
+SET(GROOT_DEPENDENCIES NodeEditor)
 
 if(ament_cmake_FOUND)
     ament_target_dependencies(behavior_tree_editor ${dependencies})
@@ -156,14 +158,18 @@ else()
 endif()
 
 if( ZMQ_FOUND )
-    SET(GROOT_DEPENDENCIES ${GROOT_DEPENDENCIES} zmq)
+    SET(GROOT_DEPENDENCIES ${GROOT_DEPENDENCIES} ZMQ)
 endif()
 
-target_link_libraries(behavior_tree_editor ${GROOT_DEPENDENCIES} )
+# target_link_libraries(behavior_tree_editor
+#   INTERFACE NodeEditor::nodes
+#   PUBLIC behavior_tree_editor )
 
 
 add_executable(Groot ./bt_editor/main.cpp  ${RESOURCE_FILES})
-target_link_libraries(Groot behavior_tree_editor )
+target_link_libraries(Groot
+  PUBLIC NodeEditor::nodes
+  PUBLIC behavior_tree_editor)
 
 add_subdirectory(test)
 
@@ -190,7 +196,19 @@ else()
     
 endif()
 
-INSTALL(TARGETS behavior_tree_editor LIBRARY DESTINATION ${GROOT_LIB_DESTINATION} )
+INSTALL(TARGETS behavior_tree_editor
+  LIBRARY DESTINATION ${GROOT_LIB_DESTINATION}
+  ARCHIVE DESTINATION lib
+  INCLUDES DESTINATION include
+)
+
+# configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/cmake/.cmake.in
+#   ${CMAKE_CURRENT_BINARY_DIR}/NodeEditorConfig.cmake
+#   INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
+# )
+
+INSTALL(FILES cmake/FindZMQ.cmake DESTINATION lib/cmake)
+
 INSTALL(TARGETS Groot RUNTIME DESTINATION ${GROOT_BIN_DESTINATION} )
 
 # this didn't work:
