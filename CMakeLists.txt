@@ -26,6 +26,7 @@ if(ament_cmake_FOUND)
 
   set(dependencies
     behaviortree_cpp_v3
+    Qt5
     NodeEditor
   )
 
@@ -147,10 +148,10 @@ add_library(behavior_tree_editor SHARED
     ${FORMS_HEADERS}
 )
 
-SET(GROOT_DEPENDENCIES NodeEditor)
+SET(GROOT_DEPENDENCIES NodeEditor Qt5)
 
 if(ament_cmake_FOUND)
-    ament_target_dependencies(behavior_tree_editor ${dependencies})
+    ament_target_dependencies(behavior_tree_editor PUBLIC ${dependencies})
 elseif( catkin_FOUND )
     SET(GROOT_DEPENDENCIES ${GROOT_DEPENDENCIES} ${catkin_LIBRARIES} )
 else()
@@ -165,6 +166,15 @@ endif()
 #   INTERFACE NodeEditor::nodes
 #   PUBLIC behavior_tree_editor )
 
+target_link_libraries(behavior_tree_editor
+  PUBLIC NodeEditor::nodes
+  PUBLIC Qt5::Core
+  PUBLIC Qt5::Widgets
+  PUBLIC Qt5::Gui
+  PUBLIC Qt5::OpenGL
+  PUBLIC Qt5::Xml
+  PUBLIC Qt5::Svg
+)
 
 add_executable(Groot ./bt_editor/main.cpp  ${RESOURCE_FILES})
 target_link_libraries(Groot
@@ -200,11 +210,6 @@ INSTALL(TARGETS behavior_tree_editor
   LIBRARY DESTINATION ${GROOT_LIB_DESTINATION}
   ARCHIVE DESTINATION lib
   INCLUDES DESTINATION include/bt_editor
-)
-
-configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/cmake/.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/NodeEditorConfig.cmake
-  INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
 )
 
 INSTALL(FILES cmake/FindZMQ.cmake DESTINATION lib/cmake)
