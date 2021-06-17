@@ -146,6 +146,7 @@ QT5_WRAP_UI(FORMS_HEADERS ${FORMS_UI})
 add_library(behavior_tree_editor SHARED
     ${APP_CPPS}
     ${FORMS_HEADERS}
+    ${RESOURCE_FILES}
 )
 
 SET(GROOT_DEPENDENCIES NodeEditor Qt5)
