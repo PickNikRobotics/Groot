@@ -61,6 +61,8 @@ public:
 
     GraphicMode getGraphicMode(void) const;
 
+    void connectToZMQ();
+
 public slots:
 
     void onAutoArrange();

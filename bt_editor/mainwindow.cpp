@@ -1701,3 +1701,9 @@ GraphicMode MainWindow::getGraphicMode(void) const
 {
     return _current_mode;
 }
+
+
+void MainWindow::connectToZMQ()
+{
+    ui->toolButtonConnect->click();
+}
