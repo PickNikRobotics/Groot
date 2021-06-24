@@ -4,7 +4,7 @@ PROJECT(GrootTest LANGUAGES CXX)
 
 find_package(Qt5Test REQUIRED)
 find_package(Qt5Gui REQUIRED)
-find_package(NodeEditor COMPONENTS nodes REQUIRED)
+find_package(node_editor COMPONENTS nodes REQUIRED)
 
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTORCC ON)
