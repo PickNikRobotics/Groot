@@ -26,7 +26,7 @@
   <build_depend>qttools5-dev-tools</build_depend>
   <build_depend>libdw-dev</build_depend>
   <build_depend>libzmq3-dev</build_depend>
-  <build_depend>NodeEditor</build_depend>
+  <build_depend>node_editor</build_depend>
 
   <exec_depend>behaviortree_cpp_v3</exec_depend>
 

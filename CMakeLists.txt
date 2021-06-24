@@ -8,7 +8,7 @@ endif()
 
 project(groot)
 
-find_package(NodeEditor COMPONENTS nodes REQUIRED)
+find_package(node_editor COMPONENTS nodes REQUIRED)
 find_package(Qt5 COMPONENTS  Core Widgets Gui OpenGL Xml Svg REQUIRED)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}  "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
@@ -27,7 +27,7 @@ if(ament_cmake_FOUND)
   set(dependencies
     behaviortree_cpp_v3
     Qt5
-    NodeEditor
+    node_editor
   )
 
   message(STATUS "------------------------------------------------")
@@ -149,7 +149,7 @@ add_library(behavior_tree_editor SHARED
     ${RESOURCE_FILES}
 )
 
-SET(GROOT_DEPENDENCIES NodeEditor Qt5)
+SET(GROOT_DEPENDENCIES node_editor Qt5)
 
 if(ament_cmake_FOUND)
     ament_target_dependencies(behavior_tree_editor PUBLIC ${dependencies})
@@ -168,7 +168,7 @@ endif()
 #   PUBLIC behavior_tree_editor )
 
 target_link_libraries(behavior_tree_editor
-  PUBLIC NodeEditor::nodes
+  PUBLIC node_editor::nodes
   PUBLIC Qt5::Core
   PUBLIC Qt5::Widgets
   PUBLIC Qt5::Gui
@@ -179,7 +179,7 @@ target_link_libraries(behavior_tree_editor
 
 add_executable(Groot ./bt_editor/main.cpp  ${RESOURCE_FILES})
 target_link_libraries(Groot
-  PUBLIC NodeEditor::nodes
+  PUBLIC node_editor::nodes
   PUBLIC behavior_tree_editor)
 
 add_subdirectory(test)
