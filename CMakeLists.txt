@@ -13,10 +13,10 @@ find_package(Qt5 COMPONENTS  Core Widgets Gui OpenGL Xml Svg REQUIRED)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}  "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 if(NOT CMAKE_VERSION VERSION_LESS 3.1)
-    set(CMAKE_CXX_STANDARD 11)
+    set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 endif()
 
 #############################################################
@@ -213,15 +213,13 @@ INSTALL(TARGETS behavior_tree_editor
   INCLUDES DESTINATION include/bt_editor
 )
 
-INSTALL(FILES cmake/FindZMQ.cmake DESTINATION lib/cmake)
-
 INSTALL(TARGETS Groot RUNTIME DESTINATION ${GROOT_BIN_DESTINATION} )
 
 INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bt_editor/ DESTINATION ${GROOT_INC_DESTINATION}/bt_editor/)
 
 if(ament_cmake_FOUND)
   ament_export_include_directories(include)
-  ament_export_dependencies(${GROOT_DEPENDENCIES} ${dependencies})
+  ament_export_dependencies(${dependencies})
   ament_export_libraries(behavior_tree_editor)
   ament_package()
 endif()

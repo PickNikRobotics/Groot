@@ -132,6 +132,7 @@ private:
     NodesVector _nodes;
 };
 
+[[maybe_unused]]
 static int GetUID()
 {
     static int uid = 1000;
