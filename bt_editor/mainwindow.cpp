@@ -85,7 +85,7 @@ MainWindow::MainWindow(GraphicMode initial_mode, QWidget *parent) :
     {
         registerModel( model.first, model.second );
         _treenode_models.insert( { model.first, model.second } );
-        qDebug() << "adding model: " << model.first;
+        //qDebug() << "adding model: " << model.first;
     }
     //------------------------------------------------------
 
@@ -149,7 +149,7 @@ MainWindow::MainWindow(GraphicMode initial_mode, QWidget *parent) :
     {
         if (prev_ID == new_ID)
             return;
-            
+
         for (int index = 0; index < ui->tabWidget->count(); index++)
         {
             if( ui->tabWidget->tabText(index) == prev_ID)
